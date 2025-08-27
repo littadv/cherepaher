@@ -6,11 +6,19 @@ from levels import load_level # ← импорт функции загрузки
 from input_handler import handle_input # ← импорт функции обработки ввода
 from main_menu import run_menu, select_level_menu # ← импорт главного меню
 from level_gen import save_generate_level   # ← импорт функции генерации уровней    
-# пути к ресурсам
-BASE = os.path.dirname(__file__)
-SPRITES_DIR = os.path.join(BASE, "sprites")
-LEVELS_DIR = os.path.join(BASE, "levels")
 
+# Функция для получения пути к ресурсам
+def resource_path(relative):
+    if hasattr(sys, "_MEIPASS"):   # когда запущено как .exe
+        return os.path.join(sys._MEIPASS, relative)
+    return os.path.join(os.path.dirname(__file__), relative)
+
+# Директории
+BASE = resource_path("")  # пустая строка = сама папка проекта/MEIPASS
+SPRITES_DIR = resource_path("sprites")
+LEVELS_DIR  = resource_path("levels")
+
+# Инициализация Pygame
 pygame.init()
 screen = pygame.display.set_mode(GAME_SIZE)
 pygame.display.set_caption(WINDOW_TITLE)
@@ -19,7 +27,7 @@ if os.path.exists(icon_path):
     pygame.display.set_icon(pygame.image.load(icon_path))
 
 sprites = load_sprites(SPRITES_DIR)
-# 
+
 save_generate_level (LEVELS_DIR)  # ← генерация уровней
 
 
@@ -76,6 +84,7 @@ while running:
         show_popup(screen, f"Уровень {current_level + 1} пройден!")
         current_level += 1
         pygame.display.set_caption(WINDOW_TITLE + "  — Уровень " + str(current_level))
+        win_shown = True
         if current_level < len(level_files):
             player_pos, star_pos, blocks = load_level(os.path.join(LEVELS_DIR, level_files[current_level]))
             turtle_dir = "S"
@@ -83,7 +92,7 @@ while running:
         else:
             show_popup(screen, "Все уровни пройдены!")
             running = False
-        win_shown = True
+        
 
     # Отрисовка
     screen.fill((40, 40, 40))

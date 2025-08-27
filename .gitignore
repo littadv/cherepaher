@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# VS Code
+.vscode/
+
+# Build artifacts
+dist/
+build/
+*.spec
+
+# Generated levels (создаются при запуске игры)
+levels/*.txt
+
+# System files
+.DS_Store
+Thumbs.db
